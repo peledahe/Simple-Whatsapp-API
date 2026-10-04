@@ -122,6 +122,7 @@ router.post('/logout-all', logoutAll);
  *         description: Server error.
  */
 router.get('/sessions', getActiveSessions);
+router.get('/active-sessions', getActiveSessions);
 
 /**
  * @swagger

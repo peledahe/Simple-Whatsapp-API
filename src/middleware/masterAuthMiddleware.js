@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { logAccess } = require('../utils/logger');
+const { validateRegisteredApiKey } = require('../services/dbService');
 
 /**
  * Parses configured master API keys from environment variables.
@@ -52,47 +53,104 @@ const getRegisteredKeysMap = () => {
 
 /**
  * Middleware to protect all API routes with Master API keys.
- * Supports multiple keys assigned to different apps, and logs daily access.
+ * Supports:
+ * 1. Clientes registrados en el Ambiente de Administración con vigencia activa.
+ * 2. Claves maestras por default en variables de entorno (.env) para aplicaciones no registradas o legacy.
  */
 const masterApiKeyAuth = (req, res, next) => {
-    const masterKey = req.get('X-MASTER-KEY') || (req.body ? req.body['X-MASTER-KEY'] : undefined);
+    const masterKey = req.get('X-MASTER-KEY') 
+        || req.get('x-master-key')
+        || (req.body ? (req.body['X-MASTER-KEY'] || req.body['x-master-key'] || req.body['master_key'] || req.body['masterKey']) : undefined)
+        || (req.query ? (req.query['X-MASTER-KEY'] || req.query['x-master-key'] || req.query['master_key'] || req.query['masterKey']) : undefined);
     const ip = req.ip || req.connection.remoteAddress || 'unknown';
 
-    const registeredKeys = getRegisteredKeysMap();
-
-    if (registeredKeys.size === 0) {
-        console.error("No MASTER_API_KEYS or MASTER_API_KEY configured in environment.");
-        return res.status(500).json({ error: 'Server configuration error: No master API keys configured.' });
-    }
-
-    if (!masterKey || !registeredKeys.has(masterKey)) {
-        const keyMasked = masterKey ? `${masterKey.substring(0, Math.min(3, masterKey.length))}***` : 'NONE';
+    if (!masterKey) {
         logAccess({
             appName: 'UNAUTHORIZED',
-            keyMasked,
+            keyMasked: 'NONE',
             endpoint: req.originalUrl || req.url,
             method: req.method,
             ip,
             status: 401,
-            details: 'Invalid or missing master API key'
+            details: 'Missing Master API key'
         });
-        return res.status(401).json({ error: 'Unauthorized: Missing or invalid Master API key.' });
+        return res.status(401).json({ error: 'Unauthorized: Missing Master API key (X-MASTER-KEY).' });
     }
 
-    const appName = registeredKeys.get(masterKey);
-    req.appName = appName;
     const keyMasked = `${masterKey.substring(0, Math.min(3, masterKey.length))}***`;
 
+    // 1. Verificar si pertenece a un cliente registrado en la base de datos
+    const clientValidation = validateRegisteredApiKey(masterKey);
+
+    if (clientValidation.client) {
+        // La clave existe en la base de clientes registrados
+        if (!clientValidation.isValid) {
+            logAccess({
+                appName: clientValidation.client.name || 'CLIENT_BLOCKED',
+                keyMasked,
+                endpoint: req.originalUrl || req.url,
+                method: req.method,
+                ip,
+                status: 403,
+                details: clientValidation.reason
+            });
+            return res.status(403).json({
+                error: 'Forbidden: Acceso no autorizado para esta aplicación',
+                details: clientValidation.reason,
+                client: clientValidation.client.name,
+                status: clientValidation.client.computedStatus
+            });
+        }
+
+        // Cliente registrado, activo y vigente
+        req.appName = clientValidation.appName;
+        req.client = clientValidation.client;
+        req.isRegisteredClient = true;
+
+        logAccess({
+            appName: req.appName,
+            keyMasked,
+            endpoint: req.originalUrl || req.url,
+            method: req.method,
+            ip,
+            status: 200
+        });
+
+        return next();
+    }
+
+    // 2. Fallback: Verificar si es una clave maestra por default en .env
+    const envRegisteredKeys = getRegisteredKeysMap();
+
+    if (envRegisteredKeys.has(masterKey)) {
+        const appName = envRegisteredKeys.get(masterKey);
+        req.appName = appName;
+        req.isRegisteredClient = false;
+
+        logAccess({
+            appName,
+            keyMasked,
+            endpoint: req.originalUrl || req.url,
+            method: req.method,
+            ip,
+            status: 200
+        });
+
+        return next();
+    }
+
+    // 3. Ni cliente registrado ni en .env
     logAccess({
-        appName,
+        appName: 'UNAUTHORIZED',
         keyMasked,
         endpoint: req.originalUrl || req.url,
         method: req.method,
         ip,
-        status: 200
+        status: 401,
+        details: 'Invalid Master API key'
     });
 
-    next();
+    return res.status(401).json({ error: 'Unauthorized: Invalid Master API key.' });
 };
 
 module.exports = masterApiKeyAuth;

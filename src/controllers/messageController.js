@@ -16,7 +16,8 @@ const sendTextMessage = async (req, res) => {
     }
 
     try {
-        await sendMessage(sessionId, to, message);
+        const clientId = req.client ? req.client.id : null;
+        await sendMessage(sessionId, to, message, clientId);
         res.status(200).json({ success: true, message: 'Message sent successfully.' });
     } catch (error) {
         console.error(`[${sessionId}] Failed to send message:`, error);
@@ -42,9 +43,10 @@ const sendAttachmentMessage = async (req, res) => {
     }
 
     try {
+        const clientId = req.client ? req.client.id : null;
         if (req.file) {
             // A file was uploaded directly with the request
-            await sendAttachment(sessionId, to, req.file.path, caption);
+            await sendAttachment(sessionId, to, req.file.path, caption, undefined, clientId);
             // Clean up the temporary file after sending
             fs.unlinkSync(req.file.path);
             res.status(200).json({ success: true, message: 'Attachment sent successfully from uploaded file.' });
@@ -54,7 +56,7 @@ const sendAttachmentMessage = async (req, res) => {
             if (!file) {
                 return res.status(400).json({ error: 'Missing "file" in request body or as an uploaded file.' });
             }
-            await sendAttachment(sessionId, to, file, caption, type);
+            await sendAttachment(sessionId, to, file, caption, type, clientId);
             res.status(200).json({ success: true, message: 'Attachment sent successfully from URL/Base64.' });
         }
     } catch (error) {
@@ -83,13 +85,14 @@ const sendFromApi = async (req, res) => {
     }
 
     try {
+        const clientId = req.client ? req.client.id : null;
         if (attachmentUrl) {
             // If there's an attachment, send it with the message as a caption
-            await sendAttachment(sessionId, number, attachmentUrl, message || '');
+            await sendAttachment(sessionId, number, attachmentUrl, message || '', undefined, clientId);
             res.status(200).json({ success: true, message: 'Attachment sent successfully.' });
         } else {
             // Otherwise, send a simple text message
-            await sendMessage(sessionId, number, message);
+            await sendMessage(sessionId, number, message, clientId);
             res.status(200).json({ success: true, message: 'Message sent successfully.' });
         }
     } catch (error) {

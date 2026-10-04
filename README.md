@@ -4,20 +4,22 @@ Una API multi-sesión y fácil de desplegar que te permite enviar mensajes de te
 
 ## Características
 
+- **Panel Web de Administración (`/admin`)**: Gestión visual de clientes, planes editables (**Developer** $19 / 2k msgs, **Business** $29 / 4k msgs, **Enterprise** $59 / ilimitado), webhooks, claves dinámicas y registro de pagos con extensión automática de vigencia. Consulta el [Manual de Administración](file:///home/perry/Desarrollo/Simple-Whatsapp-API/MANUAL_ADMINISTRACION.md).
+- **Manual de Consumo Seguro**: Guía detallada para conectar y coexistir con múltiples números sin desconectar sesiones existentes. Consulta el [Manual de Consumo](file:///home/perry/Desarrollo/Simple-Whatsapp-API/MANUAL_CONSUMO_API.md).
 - **Soporte multi-sesión**: Conecta y gestiona varias cuentas de WhatsApp simultáneamente. Cada sesión está vinculada a su propia clave API única.
 - **Inicio de sesión sencillo**: Escanea un código QR una sola vez por sesión para conectar tu cuenta de WhatsApp.
 - **Sesiones persistentes**: Las sesiones se guardan localmente, por lo que el servidor puede reiniciarse sin necesidad de volver a iniciar sesión.
 - **Desvinculación limpia (Logout)**: Endpoint para cerrar sesión que revoca las credenciales de WhatsApp en el servidor y las elimina del teléfono.
 - **Depuración automática de sesiones abandonadas**: Endpoint para limpiar sesiones inactivas según un umbral de días.
 - **Protección Anti-Spam integrada**: Pausas automáticas configurables entre envíos, límite de mensajes por minuto y cuota máxima diaria por sesión.
-- **Soporte de Múltiples Claves Maestras por Aplicación**: Asigna claves maestras únicas por sistema (ej. Ventas, CRM) para rastrear el uso.
+- **Soporte de Múltiples Claves Maestras por Aplicación**: Asigna claves maestras únicas por sistema (ej. Ventas, CRM) o vinculadas a clientes registrados para rastrear el uso.
 - **Logs de acceso diarios por zona horaria**: Registra accesos y peticiones en logs diarios rotativos (`logs/access-YYYY-MM-DD.log`) configurados en horario local (ej. Guatemala `America/Guatemala`).
 - **Envío de mensajes de texto**: Un endpoint simple para enviar mensajes de texto plano desde una sesión específica.
 - **Envío de archivos adjuntos**: Envía imágenes, videos o documentos directamente mediante carga de archivos, URL o una cadena codificada en Base64.
 - **Carga de archivos**: Un endpoint dedicado para subir archivos y recibir una URL temporal, ideal para enviarlos como adjuntos más tarde.
 - **Seguridad**:
-    - Protege todo el servidor con una o varias **Claves API maestras**.
-    - Gestiona sesiones individuales de WhatsApp con una **Clave API** por sesión.
+    - Protege todo el servidor con **Claves Maestras** y validación de vigencia de clientes.
+    - Gestiona sesiones individuales de WhatsApp con una **Clave API** por sesión (`X-API-KEY`).
 - **Códigos QR dinámicos**: Obtén el código QR de inicio de sesión de cualquier sesión como cadena de texto o imagen PNG mediante endpoints de la API.
 
 ---
@@ -45,10 +47,10 @@ Crea un archivo `.env` en la raíz del proyecto y añade la configuración desea
 # .env
 
 # Claves maestras por aplicación (Formato clave:NombreAplicacion separadas por coma)
-MASTER_API_KEYS=key_ventas:SistemaVentas,key_crm:ModuloCRM,Chimpanzee24.gt:AppPrincipal
+MASTER_API_KEYS=key_ventas:SistemaVentas,key_crm:ModuloCRM,key_principal:AppPrincipal
 
 # Compatibilidad con clave única legacy
-MASTER_API_KEY=Chimpanzee24.gt
+MASTER_API_KEY=tu_master_api_key_segura
 
 PORT=3000
 

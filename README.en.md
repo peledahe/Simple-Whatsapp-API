@@ -4,20 +4,22 @@ A multi-session, easy-to-deploy API that allows you to send text messages and at
 
 ## Features
 
+- **Web Administration Panel (`/admin`)**: Visual management for clients, editable plans (**Developer** $19 / 2k msgs, **Business** $29 / 4k msgs, **Enterprise** $59 / unlimited), webhooks, dynamic API keys, and automated validity extension upon recording payments. See [Administration Manual](file:///home/perry/Desarrollo/Simple-Whatsapp-API/MANUAL_ADMINISTRACION.md).
+- **Safe Consumption Manual**: Complete step-by-step guide for multi-tenant integrations. See [Consumption Manual](file:///home/perry/Desarrollo/Simple-Whatsapp-API/MANUAL_CONSUMO_API.md).
 - **Multi-Session Support**: Connect and manage multiple WhatsApp accounts simultaneously. Each session is tied to its own unique API key.
 - **Easy Login**: Scan a QR code just once per session to connect your WhatsApp account.
 - **Persistent Sessions**: Sessions are saved locally, so the server can be restarted without needing to log in again.
 - **Clean Logout & Unlinking**: Endpoint to logout and revoke session credentials on WhatsApp servers and remove them from the phone app.
 - **Abandoned Session Cleanup**: Endpoint to clean up inactive sessions based on an inactive days threshold.
 - **Built-in Anti-Spam Protection**: Configurable delay between messages, minute rate limits, and daily quotas per session.
-- **Multi-Master Key Support by App**: Assign unique master keys to different systems (e.g., Sales, CRM) to audit usage per app.
+- **Multi-Master Key Support by App**: Assign unique master keys to different systems (e.g., Sales, CRM) or registered clients to audit usage.
 - **Daily Access Logs by Timezone**: Log requests in daily rotating files (`logs/access-YYYY-MM-DD.log`) formatted in your local timezone (e.g. Guatemala `America/Guatemala`).
 - **Send Text Messages**: A simple endpoint to send plain text messages from a specific session.
 - **Send Attachments**: Send images, videos, or documents directly via file upload, URL, or a Base64 encoded string.
 - **File Uploads**: A dedicated endpoint to upload files and receive a temporary URL, perfect for sending as attachments later.
 - **Secure**:
-    - Protect your entire server with one or multiple **Master API Keys**.
-    - Manage individual WhatsApp sessions with a per-session **API Key**.
+    - Protect your entire server with **Master API Keys** and client validity checks.
+    - Manage individual WhatsApp sessions with a per-session **API Key** (`X-API-KEY`).
 - **Dynamic QR Codes**: Fetch the login QR code for any session as a string or a PNG image via API endpoints.
 
 ---
@@ -45,10 +47,10 @@ Create a `.env` file in the root of the project and add your configuration:
 # .env
 
 # Master keys per application (Format key:AppName separated by comma)
-MASTER_API_KEYS=key_ventas:SistemaVentas,key_crm:ModuloCRM,Chimpanzee24.gt:AppPrincipal
+MASTER_API_KEYS=key_ventas:SistemaVentas,key_crm:ModuloCRM,key_principal:AppPrincipal
 
 # Legacy single master key compatibility
-MASTER_API_KEY=Chimpanzee24.gt
+MASTER_API_KEY=your_secure_master_api_key
 
 PORT=3000
 

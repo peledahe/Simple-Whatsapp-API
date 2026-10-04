@@ -82,56 +82,69 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      background: var(--bg-glass);
-      border-bottom: 1px solid var(--border-color);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(11, 15, 25, 0.88);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
     }
 
     .nav-wrapper {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 76px;
+      height: 72px;
+      gap: 20px;
     }
 
     .brand-logo {
       display: flex;
       align-items: center;
-      gap: 12px;
-      font-size: 1.25rem;
+      gap: 10px;
+      font-size: 1.15rem;
       font-weight: 700;
       color: var(--text-primary);
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .brand-logo img {
-      width: 42px;
-      height: 42px;
+      width: 38px;
+      height: 38px;
       filter: drop-shadow(0 0 10px rgba(37, 211, 102, 0.4));
     }
 
     .brand-tag {
-      background: rgba(37, 211, 102, 0.15);
+      background: rgba(37, 211, 102, 0.12);
       color: var(--brand-wa);
-      font-size: 0.75rem;
-      padding: 2px 8px;
+      font-size: 0.72rem;
+      padding: 2px 7px;
       border-radius: var(--radius-full);
       font-weight: 600;
-      border: 1px solid rgba(37, 211, 102, 0.3);
+      border: 1px solid rgba(37, 211, 102, 0.25);
+      letter-spacing: 0.02em;
     }
 
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 32px;
+      gap: 24px;
       list-style: none;
+      margin: 0;
+      padding: 0;
+      white-space: nowrap;
+      flex-shrink: 1;
     }
 
     .nav-links a {
       color: var(--text-secondary);
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 500;
+      text-decoration: none;
       transition: var(--transition-smooth);
+      padding: 6px 4px;
+      position: relative;
     }
 
     .nav-links a:hover {
@@ -141,7 +154,61 @@
     .nav-actions {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 10px;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .btn-nav {
+      padding: 7px 14px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .btn-nav-docs {
+      background: rgba(56, 189, 248, 0.08);
+      color: var(--accent-cyan);
+      border-color: rgba(56, 189, 248, 0.25);
+    }
+
+    .btn-nav-docs:hover {
+      background: rgba(56, 189, 248, 0.16);
+      border-color: var(--accent-cyan);
+      color: #FFFFFF;
+      transform: translateY(-1px);
+    }
+
+    .btn-nav-admin {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-primary);
+      border-color: var(--border-color);
+    }
+
+    .btn-nav-admin:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
+      color: var(--brand-wa);
+      transform: translateY(-1px);
+    }
+
+    .btn-nav-cta {
+      background: var(--brand-wa-gradient);
+      color: #042013;
+      box-shadow: 0 2px 10px rgba(37, 211, 102, 0.25);
+    }
+
+    .btn-nav-cta:hover {
+      background: linear-gradient(135deg, #2fe673 0%, #16a595 100%);
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+      transform: translateY(-1px);
     }
 
     /* Buttons */
@@ -700,31 +767,36 @@
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-md);
-      padding: 16px 20px;
+      padding: 18px 22px;
       margin-bottom: 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 20px;
       transition: var(--transition-smooth);
     }
 
     .endpoint-card:hover {
       border-color: rgba(255, 255, 255, 0.15);
       background: var(--bg-surface-elevated);
+      transform: translateY(-1px);
     }
 
     .endpoint-left {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 16px;
+      flex: 1;
+      min-width: 0;
     }
 
     .method-badge {
       font-family: 'Fira Code', monospace;
       font-size: 0.75rem;
       font-weight: 700;
-      padding: 4px 10px;
+      padding: 5px 11px;
       border-radius: 6px;
+      flex-shrink: 0;
     }
 
     .method-get { background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); border: 1px solid rgba(56, 189, 248, 0.3); }
@@ -735,11 +807,74 @@
       font-size: 0.95rem;
       color: var(--text-primary);
       font-weight: 500;
+      line-height: 1.3;
     }
 
     .endpoint-desc {
       color: var(--text-muted);
       font-size: 0.85rem;
+      margin-top: 3px;
+      line-height: 1.4;
+    }
+
+    .btn-endpoint {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 8px 16px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+      cursor: pointer;
+      font-family: inherit;
+      transition: var(--transition-smooth);
+      border: 1px solid transparent;
+    }
+
+    .btn-endpoint-docs {
+      background: rgba(56, 189, 248, 0.08);
+      color: var(--accent-cyan);
+      border-color: rgba(56, 189, 248, 0.25);
+    }
+
+    .btn-endpoint-docs:hover {
+      background: rgba(56, 189, 248, 0.18);
+      border-color: var(--accent-cyan);
+      color: #FFFFFF;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
+    }
+
+    .btn-endpoint-danger {
+      background: rgba(239, 68, 68, 0.08);
+      color: #F87171;
+      border-color: rgba(239, 68, 68, 0.25);
+    }
+
+    .btn-endpoint-danger:hover {
+      background: rgba(239, 68, 68, 0.18);
+      border-color: #EF4444;
+      color: #FFFFFF;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+    }
+
+    @media (max-width: 680px) {
+      .endpoint-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+      }
+      .endpoint-left {
+        width: 100%;
+      }
+      .btn-endpoint {
+        width: 100%;
+      }
     }
 
     /* Sticky Toast Notifications */
@@ -932,8 +1067,14 @@
     }
 
     /* Responsive */
-    @media (max-width: 900px) {
-      .hero-title { font-size: 2.5rem; }
+    @media (max-width: 1050px) {
+      .nav-links { gap: 16px; }
+      .nav-links a { font-size: 0.85rem; }
+      .btn-nav { padding: 6px 10px; font-size: 0.8rem; }
+    }
+
+    @media (max-width: 860px) {
+      .hero-title { font-size: 2.4rem; }
       .calculator-box { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: 1fr; }
       .nav-links { display: none; }
@@ -949,22 +1090,28 @@
       <a href="/" class="brand-logo">
         <img src="/logo.svg" alt="Mk WhatsApp API Logo">
         <span><span style="color: var(--brand-wa);">Mk</span> WhatsApp API</span>
-        <span class="brand-tag">v1.0 REST</span>
+        <span class="brand-tag">v1.0</span>
       </a>
 
       <ul class="nav-links">
         <li><a href="#features">Características</a></li>
-        <li><a href="#pricing">Planes & Precios</a></li>
-        <li><a href="#calculator">Calculadora ROI</a></li>
+        <li><a href="#pricing">Precios</a></li>
+        <li><a href="#calculator">Calculadora</a></li>
         <li><a href="#endpoints">Endpoints</a></li>
       </ul>
 
       <div class="nav-actions">
-        <a href="#quickstart" class="btn btn-outline btn-sm" id="btn-quickstart-nav">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
-          Guía Rápida
+        <a href="/api-docs/" target="_blank" class="btn-nav btn-nav-docs" title="Ver Documentación Interactiva Swagger">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+          <span>Swagger Docs</span>
         </a>
-        <a href="#pricing" class="btn btn-primary btn-sm">Ver Tarifas</a>
+        <a href="/admin" class="btn-nav btn-nav-admin" title="Ir al Panel de Administración">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          <span>Admin</span>
+        </a>
+        <a href="#pricing" class="btn-nav btn-nav-cta">
+          <span>Ver Planes</span>
+        </a>
       </div>
     </div>
   </header>
@@ -1020,26 +1167,26 @@
           </button>
           
           <div id="code-curl" class="code-content">
-<span class="comment"># Ejemplo de envío a través del Gateway seguro</span>
-curl -X POST "https://gateway.midominio.com/v1/messages/dispatch" \
+<span class="comment"># Envío de mensaje de texto a través del Gateway REST</span>
+curl -X POST "https://waapi.merke.net/api/send-message" \
   -H "<span class="header-key">Content-Type: application/json</span>" \
-  -H "<span class="header-key">x-api-key: TU_MASTER_API_KEY</span>" \
+  -H "<span class="header-key">X-MASTER-KEY: TU_MASTER_KEY</span>" \
+  -H "<span class="header-key">X-API-KEY: mi_sesion_whatsapp</span>" \
   -d '{
-    "<span class="keyword">X-API-KEY</span>": "<span class="string">instancia_empresa_01</span>",
     "<span class="keyword">to</span>": "<span class="string">50212345678</span>",
     "<span class="keyword">message</span>": "<span class="string">¡Hola! Tu notificación ha sido procesada exitosamente 🚀</span>"
   }'</div>
 
           <div id="code-nodejs" class="code-content" style="display: none;">
-<span class="comment">// Ejemplo de integración con Node.js</span>
-<span class="keyword">const</span> res = <span class="keyword">await</span> fetch(<span class="string">'https://gateway.midominio.com/v1/messages/dispatch'</span>, {
+<span class="comment">// Integración con Node.js (fetch / Axios)</span>
+<span class="keyword">const</span> res = <span class="keyword">await</span> fetch(<span class="string">'https://waapi.merke.net/api/send-message'</span>, {
   method: <span class="string">'POST'</span>,
   headers: {
     <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span>,
-    <span class="string">'x-api-key'</span>: <span class="string">'TU_MASTER_API_KEY'</span>
+    <span class="string">'X-MASTER-KEY'</span>: <span class="string">'TU_MASTER_KEY'</span>,
+    <span class="string">'X-API-KEY'</span>: <span class="string">'mi_sesion_whatsapp'</span>
   },
   body: JSON.stringify({
-    X-API-KEY: <span class="string">'instancia_empresa_01'</span>,
     to: <span class="string">'50212345678'</span>,
     message: <span class="string">'¡Hola! Tu notificación ha sido procesada exitosamente 🚀'</span>
   })
@@ -1048,16 +1195,16 @@ curl -X POST "https://gateway.midominio.com/v1/messages/dispatch" \
 console.log(data);</div>
 
           <div id="code-python" class="code-content" style="display: none;">
-<span class="comment"># Ejemplo de integración con Python</span>
+<span class="comment"># Integración con Python (requests)</span>
 <span class="keyword">import</span> requests
 
-url = <span class="string">"https://gateway.midominio.com/v1/messages/dispatch"</span>
+url = <span class="string">"https://waapi.merke.net/api/send-message"</span>
 headers = {
     <span class="string">"Content-Type"</span>: <span class="string">"application/json"</span>,
-    <span class="string">"x-api-key"</span>: <span class="string">"TU_MASTER_API_KEY"</span>
+    <span class="string">"X-MASTER-KEY"</span>: <span class="string">"TU_MASTER_KEY"</span>,
+    <span class="string">"X-API-KEY"</span>: <span class="string">"mi_sesion_whatsapp"</span>
 }
 payload = {
-    <span class="string">"X-API-KEY"</span>: <span class="string">"instancia_empresa_01"</span>,
     <span class="string">"to"</span>: <span class="string">"50212345678"</span>,
     <span class="string">"message"</span>: <span class="string">"¡Hola! Tu notificación ha sido procesada exitosamente 🚀"</span>
 }
@@ -1067,10 +1214,9 @@ print(response.json())</div>
 
           <div id="code-php" class="code-content" style="display: none;">
 <span class="comment">&lt;?php</span>
-<span class="comment">// Ejemplo de integración con PHP</span>
-$ch = curl_init(<span class="string">"https://gateway.midominio.com/v1/messages/dispatch"</span>);
+<span class="comment">// Integración con PHP (cURL)</span>
+$ch = curl_init(<span class="string">"https://waapi.merke.net/api/send-message");
 $payload = json_encode([
-    <span class="string">"X-API-KEY"</span> =&gt; <span class="string">"instancia_empresa_01"</span>,
     <span class="string">"to"</span> =&gt; <span class="string">"50212345678"</span>,
     <span class="string">"message"</span> =&gt; <span class="string">"¡Hola! Tu notificación ha sido procesada exitosamente 🚀"</span>
 ]);
@@ -1078,7 +1224,8 @@ $payload = json_encode([
 curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
     <span class="string">"Content-Type: application/json"</span>,
-    <span class="string">"x-api-key: TU_MASTER_API_KEY"</span>
+    <span class="string">"X-MASTER-KEY: TU_MASTER_KEY"</span>,
+    <span class="string">"X-API-KEY: mi_sesion_whatsapp"</span>
 ]);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, <span class="keyword">true</span>);
 $res = curl_exec($ch);
@@ -1181,132 +1328,127 @@ echo $res;</div>
         <span class="discount-badge">Ahorra 20%</span>
       </div>
 
-      <div class="pricing-grid">
-        <!-- Plan Starter -->
-        <div class="pricing-card">
+      <div class="pricing-grid" id="landing-pricing-grid">
+        <!-- Plan Developer -->
+        <div class="pricing-card" id="card-developer">
           <div class="pricing-header">
-            <h3 class="plan-name">Plan Básico</h3>
-            <p class="plan-desc">Para microempresas que requieren notificaciones automáticas y alertas puntuales.</p>
+            <div style="font-size: 1.5rem; margin-bottom: 4px;">⚠️</div>
+            <h3 class="plan-name" id="name-developer">Developer</h3>
+            <p class="plan-desc" id="desc-developer">Desarrolladores & Pruebas</p>
             <div class="plan-price-wrap">
               <span class="currency">$</span>
-              <span class="price-value" id="price-starter">9</span>
-              <span class="price-period" id="period-starter">/mes</span>
+              <span class="price-value" id="price-starter">19</span>
+              <span class="price-period" id="period-starter">USD / mes</span>
             </div>
           </div>
 
-          <ul class="pricing-features">
-            <li>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              <strong>1 Sesión</strong> WhatsApp Activa
+          <ul class="pricing-features" id="features-developer">
+            <li style="color: #FBBF24;">
+              <span style="font-weight: 700;">⚠️</span>
+              <strong>1 Sesión activa</strong> / Hasta 2,000 msgs/mes
             </li>
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              Hasta <strong>600 mensajes</strong> / mes
+              Envío de texto, imágenes y documentos
             </li>
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              Confirmaciones de pedidos y citas
+              Webhooks para recepción en tiempo real
             </li>
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              Conexión QR por interfaz web
+              Documentación Swagger interactiva
             </li>
-            <li class="disabled">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-              Envío de PDFs y multimedia pesada
-            </li>
-            <li class="disabled">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-              Múltiples sesiones simultáneas
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Soporte por correo electrónico
             </li>
           </ul>
 
-          <button class="btn btn-outline" onclick="selectPlan('Básico', 9)">Seleccionar Plan Básico</button>
+          <button class="btn btn-outline" onclick="selectPlan('developer')">Seleccionar Plan Developer</button>
         </div>
 
-        <!-- Plan Pro (Featured) -->
-        <div class="pricing-card featured">
-          <span class="popular-pill">Más Recomendado</span>
+        <!-- Plan Business (Featured) -->
+        <div class="pricing-card featured" id="card-business">
+          <span class="popular-pill">Más Popular</span>
           <div class="pricing-header">
-            <h3 class="plan-name">Plan Gestión Pro</h3>
-            <p class="plan-desc">Ideal para ERPs, CRMs, clínicas, restaurantes y comercios con flujo transaccional diario.</p>
+            <div style="font-size: 1.5rem; margin-bottom: 4px;">🚀</div>
+            <h3 class="plan-name" id="name-business">Business</h3>
+            <p class="plan-desc" id="desc-business">PyMEs y Sistemas Comerciales</p>
             <div class="plan-price-wrap">
               <span class="currency" style="color: var(--brand-wa);">$</span>
-              <span class="price-value" style="color: var(--brand-wa);" id="price-pro">19</span>
-              <span class="price-period" id="period-pro">/mes</span>
+              <span class="price-value" style="color: var(--brand-wa);" id="price-pro">29</span>
+              <span class="price-period" id="period-pro">USD / mes</span>
             </div>
           </div>
 
-          <ul class="pricing-features">
+          <ul class="pricing-features" id="features-business">
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              <strong>Hasta 2 Sesiones</strong> simultáneas
+              <strong>Todo lo incluido en Developer</strong>
             </li>
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              Hasta <strong>2,500 mensajes</strong> / mes
+              Hasta <strong>4,000 msgs/mes</strong> incluidos
             </li>
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              Facturas en PDF, Comprobantes e Imágenes
+              Hasta <strong>3 sesiones / números conectados</strong>
             </li>
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              Respuestas automatizadas moderadas
+              Envío masivo programado y encolado
             </li>
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              Auto-reconexión y persistencia de sesión
-            </li>
-            <li>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              Soporte técnico transaccional
+              Soporte prioritario por WhatsApp
             </li>
           </ul>
 
-          <button class="btn btn-primary" onclick="selectPlan('Gestión Pro', 19)">Contratar Plan Pro</button>
+          <button class="btn btn-primary" onclick="selectPlan('business')">Contratar Plan Business</button>
         </div>
 
         <!-- Plan Enterprise -->
-        <div class="pricing-card">
+        <div class="pricing-card" id="card-enterprise">
           <div class="pricing-header">
-            <h3 class="plan-name">Plan Multi-Sucursal</h3>
-            <p class="plan-desc">Para empresas con varias sucursales o líneas de atención que requieren uso controlado.</p>
+            <div style="font-size: 1.5rem; margin-bottom: 4px;">🏢</div>
+            <h3 class="plan-name" id="name-enterprise">Enterprise</h3>
+            <p class="plan-desc" id="desc-enterprise">Grandes Empresas & SaaS</p>
             <div class="plan-price-wrap">
               <span class="currency">$</span>
-              <span class="price-value" id="price-enterprise">39</span>
-              <span class="price-period" id="period-enterprise">/mes</span>
+              <span class="price-value" id="price-enterprise">59</span>
+              <span class="price-period" id="period-enterprise">USD / mes</span>
             </div>
           </div>
 
-          <ul class="pricing-features">
+          <ul class="pricing-features" id="features-enterprise">
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              <strong>Hasta 4 Sesiones</strong> (Multi-número)
+              <strong>Sesiones y números ilimitados</strong>
             </li>
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              Hasta <strong>6,000 mensajes</strong> / mes (Límite seguro)
+              <strong>Mensajes ilimitados</strong> mensuales
             </li>
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              Protección anti-saturación de línea
+              Alta concurrencia con balanceo de carga
             </li>
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              Archivos pesados (PDFs, Audio, Docs)
+              <strong>SLA del 99.9%</strong> de disponibilidad
             </li>
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              SLA 99.9% de disponibilidad del gateway
+              Despliegue On-Premise / Servidor dedicado opcional
             </li>
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              Asesoría de buenas prácticas de envío
+              Soporte técnico y arquitectura 24/7
             </li>
           </ul>
 
-          <button class="btn btn-outline" onclick="selectPlan('Multi-Sucursal', 39)">Seleccionar Plan</button>
+          <button class="btn btn-outline" onclick="selectPlan('enterprise')">Contactar para Enterprise</button>
         </div>
       </div>
 
@@ -1345,60 +1487,75 @@ echo $res;</div>
         <p class="section-subtitle">Conectividad de alto rendimiento protegida por autenticación y llave de acceso.</p>
       </div>
 
-      <div style="max-width: 850px; margin: 0 auto;">
+      <div style="max-width: 880px; margin: 0 auto;">
         <div class="endpoint-card">
           <div class="endpoint-left">
-            <span class="method-badge method-get">AUTH / QR</span>
+            <span class="method-badge method-get">GET</span>
             <div>
-              <div class="endpoint-path">Vinculación de Dispositivo & Generador QR</div>
-              <div class="endpoint-desc">Establece la conexión en tiempo real generando un código QR dinámico listo para escanear.</div>
+              <div class="endpoint-path"><code>/api/connect/image</code> — Generador de QR Dinámico</div>
+              <div class="endpoint-desc">Establece la conexión en tiempo real generando un código QR PNG listo para escanear desde WhatsApp.</div>
             </div>
           </div>
-          <button class="btn btn-outline btn-sm" onclick="showStickyToast('Módulo Activo', 'El servicio de generación de QR dinámico se encuentra 100% operativo.', 'success')">Ver Estado</button>
+          <a href="/api-docs/" target="_blank" class="btn-endpoint btn-endpoint-docs" title="Ver especificación Swagger de este endpoint">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            <span>Probar en Swagger</span>
+          </a>
         </div>
 
         <div class="endpoint-card">
           <div class="endpoint-left">
-            <span class="method-badge method-post">MESSAGING / TEXT</span>
+            <span class="method-badge method-post">POST</span>
             <div>
-              <div class="endpoint-path">Despacho de Mensajería & Notificaciones</div>
-              <div class="endpoint-desc">Envío automatizado de mensajes de texto, alertas y confirmaciones con soporte para emojis.</div>
+              <div class="endpoint-path"><code>/api/send-message</code> — Despacho de Texto</div>
+              <div class="endpoint-desc">Envío automatizado de mensajes de texto, notificaciones y confirmaciones con soporte para emojis.</div>
             </div>
           </div>
-          <button class="btn btn-outline btn-sm" onclick="showStickyToast('Módulo Activo', 'El servicio de despacho de mensajes soporta alta concurrencia.', 'success')">Ver Estado</button>
+          <a href="/api-docs/" target="_blank" class="btn-endpoint btn-endpoint-docs" title="Ver especificación Swagger de este endpoint">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            <span>Probar en Swagger</span>
+          </a>
         </div>
 
         <div class="endpoint-card">
           <div class="endpoint-left">
-            <span class="method-badge method-post">MEDIA / UPLOAD</span>
+            <span class="method-badge method-post">POST</span>
             <div>
-              <div class="endpoint-path">Transmisión Multimedia & Documentos</div>
-              <div class="endpoint-desc">Envío de facturas en PDF, comprobantes en imagen, notas de audio y videos de hasta 50MB.</div>
+              <div class="endpoint-path"><code>/api/send-attachment</code> — Transmisión Multimedia</div>
+              <div class="endpoint-desc">Envío de facturas en PDF, imágenes, audios y documentos mediante URL pública, Base64 o Multipart.</div>
             </div>
           </div>
-          <button class="btn btn-outline btn-sm" onclick="showStickyToast('Módulo Activo', 'El servicio multimedia admite URLs públicas, Base64 y Multipart.', 'success')">Ver Estado</button>
+          <a href="/api-docs/" target="_blank" class="btn-endpoint btn-endpoint-docs" title="Ver especificación Swagger de este endpoint">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            <span>Probar en Swagger</span>
+          </a>
         </div>
 
         <div class="endpoint-card">
           <div class="endpoint-left">
-            <span class="method-badge method-get">MONITOR / SESSIONS</span>
+            <span class="method-badge method-get">GET</span>
             <div>
-              <div class="endpoint-path">Monitor de Conectividad & Instancias Activas</div>
+              <div class="endpoint-path"><code>/api/sessions</code> — Monitor de Instancias Activas</div>
               <div class="endpoint-desc">Consulta métricas de disponibilidad, salud del gateway y número de sesiones conectadas.</div>
             </div>
           </div>
-          <button class="btn btn-outline btn-sm" onclick="showStickyToast('Módulo Activo', 'El monitor de sesiones reporta estado en tiempo real.', 'success')">Ver Estado</button>
+          <a href="/api-docs/" target="_blank" class="btn-endpoint btn-endpoint-docs" title="Ver especificación Swagger de este endpoint">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            <span>Probar en Swagger</span>
+          </a>
         </div>
 
         <div class="endpoint-card">
           <div class="endpoint-left">
-            <span class="method-badge method-post">SECURITY / LOGOUT</span>
+            <span class="method-badge method-post">POST</span>
             <div>
-              <div class="endpoint-path">Desconexión Segura & Cierre de Instancias</div>
-              <div class="endpoint-desc">Invalida y purga credenciales de sesión bajo demanda garantizando privacidad.</div>
+              <div class="endpoint-path"><code>/api/logout</code> — Desconexión Segura de Sesión</div>
+              <div class="endpoint-desc">Invalida y purga credenciales de una sesión específica identificada por <code>X-API-KEY</code>.</div>
             </div>
           </div>
-          <button class="btn btn-outline btn-sm" style="color: #F87171; border-color: rgba(239, 68, 68, 0.3);" onclick="showDeleteConfirmModal('instancia_empresa_01')">Simular Cierre</button>
+          <button class="btn-endpoint btn-endpoint-danger" onclick="showDeleteConfirmModal('mi_sesion_whatsapp')" title="Simular flujo de desconexión">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg>
+            <span>Simular Cierre</span>
+          </button>
         </div>
       </div>
     </div>
@@ -1466,6 +1623,7 @@ echo $res;</div>
       <div class="footer-bottom">
         <div>&copy; 2026 Mk WhatsApp API. Todos los derechos reservados.</div>
         <div style="display: flex; gap: 16px; align-items: center;">
+          <a href="/admin" style="color: var(--brand-wa); font-weight: 600; text-decoration: none; font-size: 0.85rem;">🔒 Acceso merke (Admin)</a>
           <span style="display: inline-flex; align-items: center; gap: 6px; color: var(--brand-wa);">
             <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--brand-wa); display: inline-block;"></span>
             Servidor Activo
@@ -1532,6 +1690,73 @@ echo $res;</div>
       }, 4500);
     }
 
+    // Live Plans Synchronization with Backend Admin
+    let livePlans = {
+      developer: { id: 'developer', name: 'Developer', badge: 'Desarrolladores & Pruebas', priceMonthly: 19, monthlyMsgLimit: 2000, maxSessions: 1, features: ['1 Sesión activa / Hasta 2,000 msgs/mes', 'Envío de texto, imágenes y documentos', 'Webhooks para recepción en tiempo real', 'Documentación Swagger interactiva', 'Soporte por correo electrónico'] },
+      business: { id: 'business', name: 'Business', badge: 'PyMEs y Sistemas Comerciales', priceMonthly: 29, monthlyMsgLimit: 4000, maxSessions: 3, features: ['Todo lo incluido en Developer', 'Hasta 4,000 msgs/mes incluidos', 'Hasta 3 sesiones / números conectados', 'Envío masivo programado y encolado', 'Soporte prioritario por WhatsApp'] },
+      enterprise: { id: 'enterprise', name: 'Enterprise', badge: 'Grandes Empresas & SaaS', priceMonthly: 59, monthlyMsgLimit: 0, maxSessions: 0, features: ['Sesiones y números ilimitados', 'Mensajes ilimitados mensuales', 'Alta concurrencia con balanceo de carga', 'SLA del 99.9% de disponibilidad', 'Despliegue On-Premise / Servidor dedicado opcional', 'Soporte técnico y arquitectura 24/7'] }
+    };
+
+    async function fetchLivePlans() {
+      try {
+        const res = await fetch('/api/admin/plans');
+        const data = await res.json();
+        if (data && data.success && data.plans) {
+          livePlans = data.plans;
+          applyLivePlansToDOM();
+          updateCalculator();
+        }
+      } catch (err) {
+        console.warn('Usando configuración predeterminada de planes:', err);
+      }
+    }
+
+    function applyLivePlansToDOM() {
+      const dev = livePlans.developer || {};
+      const biz = livePlans.business || {};
+      const ent = livePlans.enterprise || {};
+
+      const devPrice = isAnnual ? Math.round((dev.priceMonthly || 19) * 0.8) : (dev.priceMonthly || 19);
+      const bizPrice = isAnnual ? Math.round((biz.priceMonthly || 29) * 0.8) : (biz.priceMonthly || 29);
+      const entPrice = isAnnual ? Math.round((ent.priceMonthly || 59) * 0.8) : (ent.priceMonthly || 59);
+      const period = isAnnual ? 'USD / mes (anual)' : 'USD / mes';
+
+      if (document.getElementById('name-developer')) document.getElementById('name-developer').textContent = dev.name || 'Developer';
+      if (document.getElementById('desc-developer')) document.getElementById('desc-developer').textContent = dev.badge || 'Desarrolladores & Pruebas';
+      if (document.getElementById('price-starter')) document.getElementById('price-starter').textContent = devPrice;
+      if (document.getElementById('period-starter')) document.getElementById('period-starter').textContent = period;
+
+      if (document.getElementById('name-business')) document.getElementById('name-business').textContent = biz.name || 'Business';
+      if (document.getElementById('desc-business')) document.getElementById('desc-business').textContent = biz.badge || 'PyMEs y Sistemas Comerciales';
+      if (document.getElementById('price-pro')) document.getElementById('price-pro').textContent = bizPrice;
+      if (document.getElementById('period-pro')) document.getElementById('period-pro').textContent = period;
+
+      if (document.getElementById('name-enterprise')) document.getElementById('name-enterprise').textContent = ent.name || 'Enterprise';
+      if (document.getElementById('desc-enterprise')) document.getElementById('desc-enterprise').textContent = ent.badge || 'Grandes Empresas & SaaS';
+      if (document.getElementById('price-enterprise')) document.getElementById('price-enterprise').textContent = entPrice;
+      if (document.getElementById('period-enterprise')) document.getElementById('period-enterprise').textContent = period;
+
+      // Render features si están disponibles
+      renderFeaturesList('features-developer', dev.features);
+      renderFeaturesList('features-business', biz.features);
+      renderFeaturesList('features-enterprise', ent.features);
+    }
+
+    function renderFeaturesList(containerId, features) {
+      const ul = document.getElementById(containerId);
+      if (!ul || !Array.isArray(features) || features.length === 0) return;
+      ul.innerHTML = features.map(f => `
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>${escapeHtmlSimple(f)}</span>
+        </li>
+      `).join('');
+    }
+
+    function escapeHtmlSimple(str) {
+      return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
     // Pricing Billing Toggle
     let isAnnual = false;
     function togglePricing() {
@@ -1541,32 +1766,21 @@ echo $res;</div>
       document.getElementById('label-monthly').classList.toggle('active', !isAnnual);
       document.getElementById('label-annual').classList.toggle('active', isAnnual);
 
-      const starter = isAnnual ? 7 : 9;
-      const pro = isAnnual ? 15 : 19;
-      const enterprise = isAnnual ? 32 : 39;
-      const period = isAnnual ? '/mes (anual)' : '/mes';
-
-      document.getElementById('price-starter').innerText = starter;
-      document.getElementById('period-starter').innerText = period;
-
-      document.getElementById('price-pro').innerText = pro;
-      document.getElementById('period-pro').innerText = period;
-
-      document.getElementById('price-enterprise').innerText = enterprise;
-      document.getElementById('period-enterprise').innerText = period;
+      applyLivePlansToDOM();
 
       showStickyToast(
         isAnnual ? 'Facturación Anual Activada' : 'Facturación Mensual Activada',
-        isAnnual ? 'Se ha aplicado el 20% de descuento en todos los planes sugeridos.' : 'Mostrando precios regulares mes a mes.',
+        isAnnual ? 'Se ha aplicado el 20% de descuento en todas las tarifas configuradas.' : 'Mostrando precios regulares mes a mes.',
         'success'
       );
     }
 
-    function selectPlan(planName, price) {
-      const finalPrice = isAnnual ? Math.round(price * 0.8) : price;
+    function selectPlan(planKey) {
+      const plan = livePlans[planKey] || { name: planKey, priceMonthly: 19 };
+      const finalPrice = isAnnual ? Math.round((plan.priceMonthly || 19) * 0.8) : plan.priceMonthly;
       showStickyToast(
-        `Plan ${planName} Seleccionado`,
-        `Has seleccionado el Plan ${planName} por $${finalPrice} USD/mes. ¡Configuración lista!`,
+        `Plan ${plan.name} Seleccionado`,
+        `Has seleccionado el Plan ${plan.name} por $${finalPrice} USD/mes. ¡Todo listo para tu integración!`,
         'success'
       );
     }
@@ -1576,9 +1790,13 @@ echo $res;</div>
       const volume = parseInt(document.getElementById('calc-slider').value);
       document.getElementById('calc-volume-text').innerText = volume.toLocaleString();
 
+      const devPrice = livePlans.developer ? livePlans.developer.priceMonthly : 19;
+      const bizPrice = livePlans.business ? livePlans.business.priceMonthly : 29;
+      const entPrice = livePlans.enterprise ? livePlans.enterprise.priceMonthly : 59;
+
       // Meta charges roughly $0.035 avg per conversation window
-      const metaCost = Math.max(10, Math.round(volume * 0.035));
-      const apiCost = volume > 2500 ? 39 : (volume > 600 ? 19 : 9);
+      const metaCost = Math.max(15, Math.round(volume * 0.035));
+      const apiCost = volume > 4000 ? entPrice : (volume > 2000 ? bizPrice : devPrice);
       const savings = Math.max(0, metaCost - apiCost);
       const percent = Math.round((savings / metaCost) * 100);
 
@@ -1587,6 +1805,11 @@ echo $res;</div>
         Costo Meta Cloud: ~$${metaCost.toLocaleString()}/mes vs Costo Mk API: ~$${apiCost}/mes (<strong>Ahorro del ${percent}%</strong>)
       `;
     }
+
+    // Inicializar sincronización de planes al cargar
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchLivePlans();
+    });
 
     // Modal Confirmation for Session Delete / Logout
     let pendingSessionToDelete = null;

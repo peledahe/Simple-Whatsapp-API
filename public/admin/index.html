@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administración | Mk WhatsApp API</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+
+  <!-- Contenedor para Notificaciones STICKY -->
+  <div id="stickyNotificationContainer" class="sticky-notification-container"></div>
+
+  <!-- Pantalla de Login de Administración -->
+  <div id="loginScreen" class="login-wrap" style="display: none;">
+    <div class="login-card">
+      <img src="/logo.svg" alt="Mk Logo" class="login-logo">
+      <h2 class="login-title">Administración</h2>
+      <p class="login-subtitle">Ingresa con tus credenciales de administrador para gestionar clientes, claves y vigencias.</p>
+      
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group" style="text-align: left;">
+          <label for="loginUser">Usuario de Administración</label>
+          <input type="text" id="loginUser" required value="merke" placeholder="merke">
+        </div>
+        <div class="form-group" style="text-align: left;">
+          <label for="loginPass">Contraseña de Administración</label>
+          <input type="password" id="loginPass" required placeholder="••••••••••••">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;" id="btnLoginSubmit">
+          Ingresar al Panel
+        </button>
+      </form>
+
+      <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border-color); font-size: 0.82rem; color: var(--text-muted);">
+        <a href="/" style="color: var(--brand-wa); text-decoration: none;">← Volver al Portal Principal</a> &nbsp;•&nbsp; 
+        <a href="/api-docs" target="_blank" style="color: var(--accent-cyan); text-decoration: none;">Swagger API</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel de Administración Principal -->
+  <div id="adminApp" class="app-container" style="display: none;">
+    
+    <!-- Sidebar de Navegación -->
+    <aside class="sidebar">
+      <a href="/admin" class="sidebar-brand">
+        <img src="/logo.svg" alt="Logo">
+        <div>
+          <div class="sidebar-brand-title"><span style="color: var(--brand-wa);">Mk</span> Admin</div>
+        </div>
+        <span class="sidebar-brand-badge">PRO</span>
+      </a>
+
+      <ul class="sidebar-menu">
+        <li>
+          <a class="nav-item active" data-section="dashboard" onclick="navigateSection('dashboard')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-item" data-section="clients" onclick="navigateSection('clients')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            <span>Clientes & Claves</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-item" data-section="payments" onclick="navigateSection('payments')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+            <span>Pagos & Vigencias</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-item" data-section="plans" onclick="navigateSection('plans')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            <span>Planes de Servicio</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-item" data-section="operations" onclick="navigateSection('operations')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+            <span>Sesiones & Pruebas</span>
+          </a>
+        </li>
+        <li style="margin-top: 14px; border-top: 1px solid var(--border-color); padding-top: 10px;">
+          <a href="/api-docs" target="_blank" class="nav-item" title="Documentación Swagger protegida">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            <span>Manual Swagger</span>
+          </a>
+        </li>
+        <li>
+          <a href="/" target="_blank" class="nav-item" title="Ver Landing Page">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+            <span>Ver Portal Web</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="user-avatar">M</div>
+          <div class="user-info">
+            <div class="user-name" id="sidebarUserName">merke</div>
+            <div class="user-role">Super Administrador</div>
+          </div>
+          <button class="btn btn-outline btn-icon" onclick="handleLogout()" title="Cerrar Sesión">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Área de Trabajo Principal -->
+    <div class="main-layout">
+      
+      <!-- Barra Superior -->
+      <header class="top-bar">
+        <div class="page-title-wrap">
+          <h1 id="pageHeadingTitle">Dashboard General</h1>
+        </div>
+        <div class="top-bar-actions">
+          <button class="btn btn-secondary btn-sm" onclick="reloadCurrentData()" title="Refrescar Datos">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+            Recargar
+          </button>
+          <button class="btn btn-primary btn-sm" onclick="openNewClientModal()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Nuevo Cliente
+          </button>
+        </div>
+      </header>
+
+      <!-- Cuerpo del Contenido -->
+      <main class="content-body">
+        
+        <!-- SECCIÓN: DASHBOARD -->
+        <section id="section-dashboard" class="panel-section active">
+          
+          <!-- Métricas Clave -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon icon-cyan">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+              </div>
+              <div class="stat-info">
+                <div class="stat-label">Total Clientes</div>
+                <div class="stat-value" id="statTotalClients">0</div>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon icon-wa">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+              <div class="stat-info">
+                <div class="stat-label">Activos & Vigentes</div>
+                <div class="stat-value" id="statActiveClients">0</div>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon icon-amber">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              </div>
+              <div class="stat-info">
+                <div class="stat-label">Vencen en 7 Días</div>
+                <div class="stat-value" id="statExpiringSoon">0</div>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon icon-rose">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+              </div>
+              <div class="stat-info">
+                <div class="stat-label">Cuentas Expiradas</div>
+                <div class="stat-value" id="statExpired">0</div>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon icon-purple">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+              </div>
+              <div class="stat-info">
+                <div class="stat-label">Ingresos del Mes</div>
+                <div class="stat-value" id="statMonthlyIncome">$0 USD</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Grid de Métricas de Autenticación y Conexiones -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 24px;">
+            
+            <div class="card" style="padding: 16px 20px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">🔑 Claves API de Aplicación</span>
+                <span class="badge badge-active" id="authActiveKeysBadge">0 Activas</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                <div style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary);" id="authTotalKeysVal">0</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);" id="authInactiveKeysVal">0 inactivas / pausadas</div>
+              </div>
+            </div>
+
+            <div class="card" style="padding: 16px 20px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">📱 Autenticación WhatsApp</span>
+                <span class="badge" style="background: rgba(37, 211, 102, 0.15); color: var(--brand-wa);" id="authWaConnectedBadge">0 Conectadas</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                <div style="font-size: 1.5rem; font-weight: 700; color: var(--brand-wa);" id="authWaConnectedVal">0</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);" id="authWaPendingVal">0 esperando QR</div>
+              </div>
+            </div>
+
+            <div class="card" style="padding: 16px 20px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">🛡️ Tasa de Éxito de Gateway</span>
+                <span class="badge badge-active" id="authRateBadge">100% OK</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent-cyan);" id="authAuthorizedVal">0</div>
+                <div style="font-size: 0.8rem; color: #FCA5A5;" id="authBlockedVal">0 no autorizadas</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Tabla de Clientes con Vigencia Crítica -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Resumen Rápido de Clientes y Estado de Suscripción</h3>
+              <button class="btn btn-outline btn-sm" onclick="navigateSection('clients')">Ver Todos</button>
+            </div>
+            <div class="table-responsive">
+              <table id="dashboardClientsTable">
+                <thead>
+                  <tr>
+                    <th>Cliente</th>
+                    <th>Plan</th>
+                    <th>Estado</th>
+                    <th>Vence el</th>
+                    <th>Días Restantes</th>
+                    <th>Acción Rápida</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboardClientsTbody">
+                  <tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 24px;">Cargando clientes...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- SECCIÓN: CLIENTES & CLAVES -->
+        <section id="section-clients" class="panel-section">
+          
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Directorio de Clientes Registrados</h3>
+                <p style="font-size: 0.84rem; color: var(--text-secondary); margin-top: 4px;">
+                  Administra las empresas integradas, sus aplicaciones asociadas y sus distintas llaves maestras de API.
+                </p>
+              </div>
+              
+              <div style="display: flex; gap: 10px; align-items: center;">
+                <input type="text" id="clientSearchInput" placeholder="Buscar por nombre, email o clave..." oninput="filterClientsTable()" style="max-width: 260px; padding: 8px 12px; font-size: 0.85rem;">
+                <select id="clientPlanFilter" onchange="filterClientsTable()" style="max-width: 150px; padding: 8px 12px; font-size: 0.85rem;">
+                  <option value="">Todos los Planes</option>
+                  <option value="developer">Developer</option>
+                  <option value="business">Business</option>
+                  <option value="enterprise">Enterprise</option>
+                </select>
+                <button class="btn btn-primary btn-sm" onclick="openNewClientModal()">+ Registrar Cliente</button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Cliente / Contacto</th>
+                    <th>Perfil / Plan</th>
+                    <th>Estado Vigencia</th>
+                    <th>Consumo Mensual</th>
+                    <th>Claves & Webhook</th>
+                    <th style="text-align: right;">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="clientsTableBody">
+                  <tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 32px;">Cargando clientes...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- SECCIÓN: PAGOS & VIGENCIAS -->
+        <section id="section-payments" class="panel-section">
+          
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Historial de Pagos & Renovación de Vigencias</h3>
+                <p style="font-size: 0.84rem; color: var(--text-secondary); margin-top: 4px;">
+                  Registros de transacciones y extensiones de tiempo de servicio de las cuentas de clientes.
+                </p>
+              </div>
+              <button class="btn btn-primary btn-sm" onclick="openPaymentModalDirect()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                Registrar Pago de Cliente
+              </button>
+            </div>
+
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID Pago</th>
+                    <th>Cliente</th>
+                    <th>Plan</th>
+                    <th>Monto USD</th>
+                    <th>Período Agregado</th>
+                    <th>Fecha de Pago</th>
+                    <th>Nueva Vigencia</th>
+                    <th>Referencia</th>
+                  </tr>
+                </thead>
+                <tbody id="paymentsTableBody">
+                  <tr><td colspan="8" style="text-align: center; color: var(--text-muted); padding: 32px;">Cargando pagos...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- SECCIÓN: PLANES DE SERVICIO -->
+        <section id="section-plans" class="panel-section">
+          <div style="margin-bottom: 24px;">
+            <h2 style="font-size: 1.3rem; margin-bottom: 4px;">Perfiles y Planes de Suscripción Oficiales</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">
+              Especificaciones de límites, concurrencia y tarifas disponibles para asignación a clientes.
+            </p>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;" id="plansGridContainer">
+            <!-- Renderizado dinámico desde backend -->
+          </div>
+        </section>
+
+        <!-- SECCIÓN: SESIONES & PRUEBAS DE FUNCIONAMIENTO -->
+        <section id="section-operations" class="panel-section">
+          <div style="margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+            <div>
+              <h2 style="font-size: 1.3rem; margin-bottom: 4px;">Control de Sesiones & Pruebas en Vivo</h2>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                Supervisa las conexiones de WhatsApp, libera sesiones inactivas y ejecuta pruebas de envío rápidas.
+              </p>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+              <button class="btn btn-secondary btn-sm" onclick="loadSessionsData()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                Actualizar Sesiones
+              </button>
+              <button class="btn btn-primary btn-sm" onclick="openConnectModalDirect()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                + Conectar Sesión con QR
+              </button>
+            </div>
+          </div>
+
+          <!-- Métricas de Sesiones -->
+          <div class="stats-grid" style="margin-bottom: 24px;">
+            <div class="stat-card">
+              <div class="stat-icon icon-cyan">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+              </div>
+              <div class="stat-info">
+                <div class="stat-label">Total de Sesiones</div>
+                <div class="stat-value" id="opTotalSessions">0</div>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon icon-wa">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              </div>
+              <div class="stat-info">
+                <div class="stat-label">Conectadas y Listas</div>
+                <div class="stat-value" id="opActiveSessions">0</div>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon icon-purple">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+              </div>
+              <div class="stat-info">
+                <div class="stat-label">Estado de la API</div>
+                <div class="stat-value" style="font-size: 1.2rem; color: var(--brand-wa);">Operativa</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr; gap: 24px;">
+            
+            <!-- Tabla de Sesiones Activas con Filtros y Paginación -->
+            <div class="card">
+              <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                <div>
+                  <h3 class="card-title">📱 Sesiones de WhatsApp Registradas</h3>
+                  <p style="font-size: 0.84rem; color: var(--text-secondary); margin-top: 4px;">
+                    Instancias activas o guardadas vinculadas con clientes o claves independientes.
+                  </p>
+                </div>
+
+                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                  <input type="text" id="sessionSearchInput" placeholder="Buscar por clave o cliente..." oninput="filterSessionsTable()" style="max-width: 220px; padding: 7px 12px; font-size: 0.84rem;">
+                  <select id="sessionStatusFilter" onchange="filterSessionsTable()" style="max-width: 160px; padding: 7px 12px; font-size: 0.84rem;">
+                    <option value="">Todos los Estados</option>
+                    <option value="connected">🟢 Conectadas</option>
+                    <option value="waiting">🟡 Esperando QR</option>
+                    <option value="stored">⚪ Guardadas / Inactivas</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="table-responsive">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Identificador / Clave</th>
+                      <th>Cliente Asignado</th>
+                      <th>Estado de Conexión</th>
+                      <th>Última Actividad</th>
+                      <th style="text-align: right;">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="opSessionsTableBody">
+                    <tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 28px;">Cargando sesiones...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Barra de Paginación de Sesiones -->
+              <div id="sessionsPaginationContainer" class="pagination-container">
+                <div id="sessionsPaginationInfo">Mostrando 0 de 0 sesiones</div>
+                <div class="pagination-controls">
+                  <div class="pagination-pagesize">
+                    <span>Mostrar:</span>
+                    <select id="sessionsPageSizeSelect" onchange="handleSessionsPageSizeChange()">
+                      <option value="5">5 / pág</option>
+                      <option value="10" selected>10 / pág</option>
+                      <option value="25">25 / pág</option>
+                    </select>
+                  </div>
+                  <nav id="sessionsPaginationButtons" class="pagination-nav" aria-label="Paginación de sesiones">
+                    <!-- Botones dinámicos de paginación -->
+                  </nav>
+                </div>
+              </div>
+
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 24px;">
+              
+              <!-- Tarjeta: Mantenimiento y Limpieza -->
+              <div class="card">
+                <div class="card-header">
+                  <div>
+                    <h3 class="card-title">🧹 Mantenimiento de Sesiones Inactivas</h3>
+                    <p style="font-size: 0.84rem; color: var(--text-secondary); margin-top: 4px;">
+                      Elimina sesiones abandonadas para liberar memoria y espacio en disco.
+                    </p>
+                  </div>
+                </div>
+                <div style="padding: 20px;">
+                  <div class="form-group">
+                    <label for="cleanInactiveDaysSelect">Limpiar sesiones con inactividad mayor a:</label>
+                    <select id="cleanInactiveDaysSelect" style="width: 100%; padding: 10px 14px; font-size: 0.9rem;">
+                      <option value="3">3 Días de inactividad</option>
+                      <option value="7" selected>7 Días de inactividad (Recomendado)</option>
+                      <option value="15">15 Días de inactividad</option>
+                      <option value="30">30 Días de inactividad</option>
+                    </select>
+                  </div>
+                  <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5;">
+                    💡 Las sesiones conectadas actualmente <strong>no se borrarán</strong>. Solo se liberarán aquellas que ya no tengan comunicación activa.
+                  </p>
+                  <button type="button" class="btn btn-secondary" onclick="handleCleanInactiveSessions()" style="width: 100%;">
+                    🧹 Limpiar Sesiones Inactivas
+                  </button>
+                </div>
+              </div>
+
+              <!-- Tarjeta: Consola de Pruebas de Funcionamiento -->
+              <div class="card">
+                <div class="card-header">
+                  <div>
+                    <h3 class="card-title">🚀 Probar Envío de Mensaje</h3>
+                    <p style="font-size: 0.84rem; color: var(--text-secondary); margin-top: 4px;">
+                      Envía un mensaje rápido a tu WhatsApp para verificar la respuesta del sistema.
+                    </p>
+                  </div>
+                </div>
+                <form id="formTestSend" onsubmit="handleExecuteTestMessage(event)" style="padding: 20px;">
+                  <div class="form-group">
+                    <label for="testSessionSelect">Sesión / Clave Emisora *</label>
+                    <select id="testSessionSelect" required style="width: 100%; padding: 10px 14px; font-size: 0.9rem;">
+                      <option value="">Selecciona una clave o sesión...</option>
+                    </select>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="testPhoneNumber">Número de Destino (con código de país) *</label>
+                    <input type="text" id="testPhoneNumber" required placeholder="Ej: 50212345678 o 5219991234567" style="width: 100%; padding: 10px 14px; font-size: 0.9rem;">
+                  </div>
+
+                  <div class="form-group">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                      <label for="testMessageBody" style="margin-bottom: 0;">Texto del Mensaje *</label>
+                      <button type="button" class="btn btn-outline btn-sm" onclick="setPresetTestMessage()" style="font-size: 0.75rem; padding: 2px 8px;">
+                        Insertar texto sugerido
+                      </button>
+                    </div>
+                    <textarea id="testMessageBody" rows="3" required placeholder="Escribe el mensaje de prueba..." style="width: 100%; padding: 10px 14px; font-size: 0.9rem;">🚀 ¡Hola! Este es un mensaje de prueba exitoso enviado desde el Panel de Administración de Mk WhatsApp API.</textarea>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary" id="btnTestSendSubmit" style="width: 100%; padding: 12px;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    Enviar Mensaje de Prueba
+                  </button>
+
+                  <div id="testMessageResult" style="display: none; margin-top: 16px; padding: 12px 16px; border-radius: var(--radius-sm); font-size: 0.85rem;"></div>
+                </form>
+              </div>
+
+            </div>
+
+          </div>
+        </section>
+
+      </main>
+
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODALES (Regla: Confirmaciones interactivas sin alert ni confirm nativos)
+       ========================================================================= -->
+
+  <!-- Modal: Crear / Editar Cliente -->
+  <div id="modalClient" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalClientTitle">Registrar Nuevo Cliente</h3>
+        <button class="modal-close" onclick="closeModal('modalClient')">&times;</button>
+      </div>
+      <form id="formClient" onsubmit="handleSaveClient(event)">
+        <div class="modal-body">
+          <input type="hidden" id="clientId">
+          
+          <div class="form-group">
+            <label for="clientName">Nombre del Cliente / Razón Social *</label>
+            <input type="text" id="clientName" required placeholder="Ej. Distribuidora Central, S.A.">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="clientEmail">Correo Electrónico</label>
+              <input type="email" id="clientEmail" placeholder="admin@empresa.com">
+            </div>
+            <div class="form-group">
+              <label for="clientPhone">Teléfono / WhatsApp</label>
+              <input type="text" id="clientPhone" placeholder="+502 1234 5678">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="clientPlan">Perfil / Plan *</label>
+              <select id="clientPlan" required onchange="handlePlanChange()">
+                <option value="developer">Developer ($9 USD/mes - 1 Sesión, 5k msgs)</option>
+                <option value="business">Business ($19 USD/mes - 3 Sesiones, Ilimitado)</option>
+                <option value="enterprise">Enterprise ($39 USD/mes - Sesiones ilimitadas)</option>
+              </select>
+            </div>
+            <div class="form-group" id="groupInitialDays">
+              <label for="clientInitialDays">Vigencia Inicial</label>
+              <select id="clientInitialDays">
+                <option value="30">1 Mes (30 días)</option>
+                <option value="90">3 Meses (90 días)</option>
+                <option value="180">6 Meses (180 días)</option>
+                <option value="365">1 Año (365 días)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Configuración de Webhook de Recepción -->
+          <div style="background: rgba(56, 189, 248, 0.03); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: var(--radius-md); padding: 16px; margin-top: 14px;">
+            <div style="font-size: 0.85rem; font-weight: 600; margin-bottom: 10px; color: var(--accent-cyan); display: flex; align-items: center; justify-content: space-between;">
+              <span>🌐 Webhook para Mensajes Entrantes & Eventos</span>
+              <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: normal;">(Opcional)</span>
+            </div>
+            <div class="form-group">
+              <label for="clientWebhookUrl">URL del Webhook (HTTP POST)</label>
+              <input type="url" id="clientWebhookUrl" placeholder="https://mi-crm.com/api/webhooks/whatsapp">
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="clientWebhookSecret">Firma Secreta HMAC (X-Hub-Signature-256)</label>
+              <input type="text" id="clientWebhookSecret" placeholder="clave_secreta_para_verificar_payload">
+            </div>
+          </div>
+
+          <!-- Campos de API Key inicial (Solo al crear) -->
+          <div id="initialKeySection" style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 16px; margin-top: 10px;">
+            <div style="font-size: 0.85rem; font-weight: 600; margin-bottom: 10px; color: var(--brand-wa);">
+              🔑 Llave Maestra Inicial para Aplicación
+            </div>
+            <div class="form-group">
+              <label for="initialAppName">Nombre de la Aplicación donde se integrará</label>
+              <input type="text" id="initialAppName" placeholder="Ej. SistemaVentas, ModuloCRM o AppFacturacion">
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="initialApiKey">Clave Personalizada (dejar vacío para autogenerar)</label>
+              <div style="display: flex; gap: 8px;">
+                <input type="text" id="initialApiKey" placeholder="Generación automática de clave segura">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="generateSuggestedKey('initialApiKey')">Generar</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Edición de estado directo (Solo al editar) -->
+          <div id="editStatusSection" class="form-row" style="display: none; margin-top: 14px;">
+            <div class="form-group">
+              <label for="clientStatus">Estado Manual</label>
+              <select id="clientStatus">
+                <option value="active">Activo</option>
+                <option value="suspended">Suspendido</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="clientValidUntil">Fecha de Expiración</label>
+              <input type="date" id="clientValidUntil">
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('modalClient')">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btnSaveClient">Guardar Cliente</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Gestión de API Keys de Cliente -->
+  <div id="modalKeys" class="modal-backdrop">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <span>Claves API de: <span id="modalKeysClientName" style="color: var(--brand-wa);"></span></span>
+        </h3>
+        <button class="modal-close" onclick="closeModal('modalKeys')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="keysClientId">
+
+        <!-- Formulario para agregar nueva clave -->
+        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 18px; margin-bottom: 24px;">
+          <h4 style="font-size: 0.95rem; margin-bottom: 12px;">+ Asignar Nueva Clave para Aplicación</h4>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="newKeyAppName">Nombre de Aplicación Destino *</label>
+              <input type="text" id="newKeyAppName" placeholder="Ej. PortalClientes, AppMovil, etc.">
+            </div>
+            <div class="form-group">
+              <label for="newKeyString">Clave API (opcional o autogenerar)</label>
+              <div style="display: flex; gap: 8px;">
+                <input type="text" id="newKeyString" placeholder="Dejar vacío para generar automática">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="generateSuggestedKey('newKeyString')">Generar</button>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end;">
+            <button type="button" class="btn btn-primary btn-sm" onclick="handleAddApiKey()">Vincular Clave</button>
+          </div>
+        </div>
+
+        <h4 style="font-size: 0.95rem; margin-bottom: 12px; color: var(--text-secondary);">Claves Activas del Cliente</h4>
+        <div id="clientKeysList">
+          <!-- Renderizado dinámico -->
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeModal('modalKeys')">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Registrar Pago y Extender Vigencia -->
+  <div id="modalPayment" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Registrar Pago y Extender Vigencia</h3>
+        <button class="modal-close" onclick="closeModal('modalPayment')">&times;</button>
+      </div>
+      <form id="formPayment" onsubmit="handleRecordPayment(event)">
+        <div class="modal-body">
+          <input type="hidden" id="payClientId">
+
+          <div class="form-group">
+            <label for="payClientSelect">Cliente a Renovar *</label>
+            <select id="payClientSelect" required onchange="handlePaymentClientSelectChange()">
+              <!-- Opciones dinámicas -->
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="payPeriod">Período a Extender *</label>
+              <select id="payPeriod" required onchange="calculateSuggestedPaymentAmount()">
+                <option value="1">1 Mes (+30 días)</option>
+                <option value="2">2 Meses (+60 días)</option>
+                <option value="3">3 Meses (+90 días)</option>
+                <option value="6">6 Meses (+180 días)</option>
+                <option value="12">1 Año (+365 días)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="payAmount">Monto Total (USD) *</label>
+              <input type="number" step="0.01" id="payAmount" required placeholder="0.00">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="payReference">Referencia / Comprobante de Pago</label>
+            <input type="text" id="payReference" placeholder="Ej. TRANS-987241 o Factura A-102">
+          </div>
+
+          <div class="form-group">
+            <label for="payNotes">Notas Adicionales</label>
+            <textarea id="payNotes" rows="2" placeholder="Observaciones sobre la transacción o método de pago"></textarea>
+          </div>
+
+          <div id="payPreviewAlert" style="background: rgba(37, 211, 102, 0.1); border: 1px solid rgba(37, 211, 102, 0.3); border-radius: var(--radius-sm); padding: 12px; font-size: 0.85rem; color: #A7F3D0;">
+            Al registrar este pago, el estado del cliente pasará a <strong>Activo</strong> y su fecha de vigencia se extenderá automáticamente.
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('modalPayment')">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btnSubmitPayment">Confirmar Pago & Extender</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Editar Plan / Tarifas / Límites -->
+  <div id="modalEditPlan" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalEditPlanTitle">Editar Perfil de Plan</h3>
+        <button class="modal-close" onclick="closeModal('modalEditPlan')">&times;</button>
+      </div>
+      <form id="formEditPlan" onsubmit="handleSavePlan(event)">
+        <div class="modal-body">
+          <input type="hidden" id="planEditId">
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="planEditName">Nombre del Plan *</label>
+              <input type="text" id="planEditName" required placeholder="Ej. Developer, Business">
+            </div>
+            <div class="form-group">
+              <label for="planEditPrice">Tarifa Mensual (USD) *</label>
+              <input type="number" step="1" min="0" id="planEditPrice" required placeholder="19">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="planEditBadge">Subtítulo / Etiqueta del Perfil</label>
+            <input type="text" id="planEditBadge" placeholder="Ej. PyMEs y Sistemas Comerciales">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="planEditMsgLimit">Límite Mensual de Mensajes *</label>
+              <input type="number" step="100" min="0" id="planEditMsgLimit" required placeholder="0 para ilimitado">
+              <span style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; display: block;">Ingresa 0 para ilimitado</span>
+            </div>
+            <div class="form-group">
+              <label for="planEditSessions">Límite de Sesiones Activas *</label>
+              <input type="number" step="1" min="0" id="planEditSessions" required placeholder="0 para ilimitado">
+              <span style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; display: block;">Ingresa 0 para ilimitado</span>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="planEditFeatures">Lista de Características (una por línea)</label>
+            <textarea id="planEditFeatures" rows="4" placeholder="1 Sesión activa / Hasta 2,000 msgs/mes&#10;Envío de texto, imágenes y documentos&#10;Webhooks para recepción en tiempo real"></textarea>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('modalEditPlan')">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btnSavePlan">Guardar Cambios de Plan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Interactivo de Confirmación (Reemplazo estricto de alert / confirm nativos) -->
+  <div id="modalConfirm" class="modal-backdrop">
+    <div class="modal-dialog" style="max-width: 440px;">
+      <div class="modal-body confirm-box">
+        <div class="confirm-icon" id="confirmIcon">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        </div>
+        <h3 class="confirm-title" id="confirmTitle">¿Confirmar Acción?</h3>
+        <p class="confirm-desc" id="confirmMessage">¿Estás seguro de que deseas continuar con esta operación?</p>
+      </div>
+      <div class="modal-footer" style="justify-content: center; gap: 14px;">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('modalConfirm')" id="btnConfirmCancel">Cancelar</button>
+        <button type="button" class="btn btn-danger" id="btnConfirmAction">Sí, Continuar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Conectar / Vincular Sesión con Código QR -->
+  <div id="modalSessionQr" class="modal-backdrop">
+    <div class="modal-dialog" style="max-width: 480px; text-align: center;">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalSessionQrTitle">Vincular Sesión con WhatsApp</h3>
+        <button class="modal-close" onclick="closeSessionQrModal()">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 20px;">
+        
+        <!-- Selector de clave si se abre directamente -->
+        <div id="qrSessionSelectWrap" style="margin-bottom: 16px; text-align: left;">
+          <label for="qrSessionSelectDropdown" style="font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; display: block;">Seleccionar Clave de Cliente o Sesión a Conectar:</label>
+          <div style="display: flex; gap: 8px;">
+            <select id="qrSessionSelectDropdown" onchange="handleQrSelectChange()" style="flex: 1; padding: 9px 12px; font-size: 0.88rem;">
+              <option value="">-- Elige una clave de cliente --</option>
+            </select>
+            <button type="button" class="btn btn-primary btn-sm" onclick="startQrForSelectedSession()">Generar QR</button>
+          </div>
+        </div>
+
+        <p id="qrInstructionsText" style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 14px;">
+          Abre WhatsApp en tu celular, ve a <strong>Ajustes > Dispositivos vinculados</strong> y escanea el código:
+        </p>
+        
+        <div id="qrLoadingSpinner" style="padding: 28px 0; color: var(--brand-wa); display: none;">
+          <div style="font-size: 2.2rem; margin-bottom: 8px; animation: pulse 1.5s infinite;">⏳</div>
+          <p style="font-size: 0.85rem; color: var(--text-muted);" id="qrSpinnerText">Generando código QR seguro...</p>
+        </div>
+
+        <div id="qrImageContainer" style="display: none; background: #ffffff; padding: 14px; border-radius: var(--radius-md); display: inline-block; box-shadow: var(--shadow-lg); margin-bottom: 10px;">
+          <img id="qrDisplayImg" src="" alt="Código QR WhatsApp" style="width: 230px; height: 230px; display: block;">
+        </div>
+
+        <div id="qrStatusMessage" style="margin-top: 8px; font-size: 0.88rem; font-weight: 500; color: var(--accent-cyan); min-height: 24px;"></div>
+      </div>
+      <div class="modal-footer" style="justify-content: center; gap: 12px;">
+        <button type="button" class="btn btn-outline" onclick="closeSessionQrModal()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts del Panel -->
+  <script src="/admin/admin.js"></script>
+</body>
+</html>

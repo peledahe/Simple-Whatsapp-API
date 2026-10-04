@@ -11,7 +11,9 @@ services:
     volumes:
       - whatsapp_sessions:/usr/src/app/sessions
       - whatsapp_uploads:/usr/src/app/uploads
+      - whatsapp_data:/usr/src/app/data
 
 volumes:
   whatsapp_sessions:
   whatsapp_uploads:
+  whatsapp_data:
