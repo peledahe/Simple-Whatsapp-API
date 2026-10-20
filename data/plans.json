@@ -1,0 +1,48 @@
+{
+  "developer": {
+    "id": "developer",
+    "name": "Developer",
+    "badge": "Desarrolladores & Pruebas",
+    "priceMonthly": 19,
+    "maxSessions": 1,
+    "monthlyMsgLimit": 2000,
+    "features": [
+      "1 Sesión activa / Hasta 2,000 msgs/mes",
+      "Envío de texto, imágenes y documentos",
+      "Webhooks para recepción en tiempo real",
+      "Documentación Swagger interactiva",
+      "Soporte por correo electrónico"
+    ]
+  },
+  "business": {
+    "id": "business",
+    "name": "Business",
+    "badge": "PyMEs y Sistemas Comerciales",
+    "priceMonthly": 29,
+    "maxSessions": 3,
+    "monthlyMsgLimit": 4000,
+    "features": [
+      "Todo lo incluido en Developer",
+      "Hasta 4,000 msgs/mes incluidos",
+      "Hasta 3 sesiones / números conectados",
+      "Envío masivo programado y encolado",
+      "Soporte prioritario por WhatsApp"
+    ]
+  },
+  "enterprise": {
+    "id": "enterprise",
+    "name": "Enterprise",
+    "badge": "Grandes Empresas & SaaS",
+    "priceMonthly": 59,
+    "maxSessions": 0,
+    "monthlyMsgLimit": 0,
+    "features": [
+      "Sesiones y números conectados ilimitados",
+      "Mensajería ilimitada mensual",
+      "Alta concurrencia con balanceo de carga",
+      "SLA del 99.9% de disponibilidad",
+      "Despliegue On-Premise / Servidor dedicado opcional",
+      "Soporte técnico y arquitectura 24/7"
+    ]
+  }
+}

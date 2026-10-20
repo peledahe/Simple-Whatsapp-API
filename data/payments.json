@@ -1,1 +1,15 @@
-[]
+[
+  {
+    "id": "pay_e427e5fe719c",
+    "clientId": "cli_0d9f635c4045",
+    "clientName": "Merke KeyCo1",
+    "plan": "developer",
+    "amount": 19,
+    "currency": "USD",
+    "periodMonths": 1,
+    "paymentDate": "2026-10-20T14:05:12.627Z",
+    "validUntilResult": "2026-12-19T14:05:12.624Z",
+    "reference": "PAGO-INICIAL",
+    "notes": "Activación inicial plan Developer"
+  }
+]

@@ -1,1 +1,30 @@
-[]
+[
+  {
+    "id": "cli_0d9f635c4045",
+    "name": "Merke KeyCo1",
+    "email": "perrydaniels@gmail.com",
+    "phone": "+50259696181",
+    "plan": "developer",
+    "status": "active",
+    "validFrom": "2026-10-20T14:05:12.624Z",
+    "validUntil": "2026-12-19T14:05:12.624Z",
+    "webhookUrl": "",
+    "webhookSecret": "keycoone",
+    "usage": {
+      "month": "2026-10",
+      "messageCount": 0
+    },
+    "apiKeys": [
+      {
+        "id": "key_618350ed4487",
+        "key": "mk_70108a4bc71c5d963e02c7b9e60602ae",
+        "appName": "KeyCoOne",
+        "createdAt": "2026-10-20T14:05:12.624Z",
+        "isActive": true
+      }
+    ],
+    "notes": "",
+    "createdAt": "2026-10-20T14:05:12.624Z",
+    "updatedAt": "2026-10-20T14:05:12.627Z"
+  }
+]
